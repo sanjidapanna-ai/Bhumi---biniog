@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ভূমি বিনিয়োগ | Bhumi Biniog</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Hind+Siliguri:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --green:#1B4D3E;--green-mid:#2E7D5E;--green-light:#4CAF82;
+  --gold:#D4A017;--gold-light:#F0C040;
+  --cream:#FAF5E9;--cream-dark:#F0E8D0;--charcoal:#1A1A1A;
+  --text-mid:#3D3D3D;--text-soft:#6B6B6B;
+  --error:#e74c3c;--success:#27ae60;
+}
+body{font-family:'Hind Siliguri',sans-serif;background:var(--cream);color:var(--charcoal);overflow-x:hidden;}
+button{cursor:pointer;font-family:'Hind Siliguri',sans-serif;}
+input,select{font-family:'Hind Siliguri',sans-serif;}
+
+/* NAV */
+.nav{background:var(--green);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.logo-emblem{width:40px;height:40px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;color:var(--green);font-weight:900;}
+.logo-bn{font-size:15px;font-weight:600;color:var(--gold);line-height:1;display:block;}
+.logo-en{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1.5px;text-transform:uppercase;display:block;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,.8);font-size:13px;font-weight:500;cursor:pointer;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-actions{display:flex;gap:10px;align-items:center;}
+.btn-nav-login{background:transparent;border:1px solid rgba(255,255,255,.35);color:white;padding:7px 18px;border-radius:4px;font-size:13px;transition:all .2s;}
+.btn-nav-login:hover{border-color:var(--gold);color:var(--gold);}
+.btn-nav-register{background:var(--gold);border:none;color:var(--green);padding:8px 20px;border-radius:4px;font-size:13px;font-weight:700;}
+.btn-nav-register:hover{background:var(--gold-light);}
+.btn-nav-logout{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:white;padding:7px 16px;border-radius:4px;font-size:13px;}
+.user-greeting{color:var(--gold);font-size:13px;}
+
+/* HERO */
+.hero{background:var(--green);min-height:85vh;display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden;}
+.hero-left{padding:80px 5% 80px 8%;display:flex;flex-direction:column;justify-content:center;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.3);color:var(--gold);padding:6px 14px;border-radius:20px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;width:fit-content;font-family:'Cormorant Garamond',serif;}
+.hero-title{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:white;line-height:1.15;margin-bottom:8px;}
+.hero-title-bn{font-family:'Hind Siliguri',sans-serif;font-size:24px;color:var(--gold);font-weight:300;margin-bottom:20px;}
+.hero-desc{color:rgba(255,255,255,.7);font-size:15px;line-height:1.8;max-width:460px;margin-bottom:36px;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-primary{background:var(--gold);color:var(--green);border:none;padding:15px 32px;font-size:14px;font-weight:700;border-radius:4px;}
+.btn-primary:hover{background:var(--gold-light);}
+.btn-secondary{background:transparent;color:white;border:1.5px solid rgba(255,255,255,.35);padding:15px 28px;font-size:14px;border-radius:4px;}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
+.hero-right{display:flex;align-items:center;justify-content:center;padding:60px 6% 60px 0;}
+.stat-cluster{width:100%;max-width:400px;display:flex;flex-direction:column;gap:14px;}
+.stat-card{background:rgba(255,255,255,.07);border:1px solid rgba(212,160,23,.2);border-radius:12px;padding:20px 24px;}
+.stat-row{display:flex;gap:20px;}
+.stat-item{flex:1;}
+.stat-value{font-family:'Playfair Display',serif;font-size:26px;color:var(--gold);font-weight:700;line-height:1;}
+.stat-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:3px;}
+.stat-label-sm{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.mini-prog{background:rgba(255,255,255,.1);border-radius:4px;height:5px;margin-top:12px;overflow:hidden;}
+.mini-prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;}
+
+/* STRIP */
+.strip{background:var(--gold);padding:12px 8%;display:flex;justify-content:space-around;flex-wrap:wrap;gap:10px;}
+.strip-item{display:flex;align-items:center;gap:8px;color:var(--green);font-size:12px;font-weight:600;}
+
+/* SECTIONS */
+.section{padding:80px 8%;}
+.section-dark{background:var(--green);}
+.sec-label{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--green-mid);margin-bottom:10px;}
+.sec-title{font-family:'Playfair Display',serif;font-size:40px;color:var(--green);line-height:1.2;margin-bottom:10px;}
+.sec-title-bn{font-family:'Hind Siliguri',sans-serif;font-size:16px;color:var(--text-soft);font-weight:300;margin-bottom:44px;}
+.section-dark .sec-label{color:var(--gold-light);}
+.section-dark .sec-title{color:white;}
+.section-dark .sec-title-bn{color:rgba(255,255,255,.45);}
+.sec-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px;flex-wrap:wrap;gap:16px;}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.project-card{background:rgba(255,255,255,.06);border:1px solid rgba(212,160,23,.2);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s;}
+.project-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.3);}
+.proj-img{height:160px;display:flex;align-items:center;justify-content:center;position:relative;font-size:48px;opacity:.5;}
+.proj-img-1{background:linear-gradient(135deg,#1a5c4a,#0d3328);}
+.proj-img-2{background:linear-gradient(135deg,#1a3a5c,#0d1f33);}
+.proj-img-3{background:linear-gradient(135deg,#5c3a1a,#33200d);}
+.badge{position:absolute;top:10px;right:10px;background:var(--gold);color:var(--green);padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;}
+.badge-loc{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.5);color:white;padding:3px 9px;border-radius:20px;font-size:10px;}
+.proj-body{padding:18px;}
+.proj-name{font-family:'Playfair Display',serif;font-size:16px;color:white;margin-bottom:3px;}
+.proj-loc{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:12px;}
+.pstats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;padding:12px;background:rgba(255,255,255,.05);border-radius:8px;}
+.pstat-label{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.6px;text-transform:uppercase;margin-bottom:2px;}
+.pstat-val{font-family:'Playfair Display',serif;font-size:16px;color:var(--gold);font-weight:600;}
+.prog-header{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;}
+.prog-label{color:rgba(255,255,255,.45);}
+.prog-pct{color:var(--gold);font-weight:600;}
+.prog-track{background:rgba(255,255,255,.1);border-radius:4px;height:4px;overflow:hidden;margin-bottom:12px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;}
+.btn-invest{width:100%;background:var(--gold);border:none;color:var(--green);padding:11px;border-radius:6px;font-size:13px;font-weight:700;}
+.btn-invest:hover{background:var(--gold-light);}
+.btn-view-all{background:transparent;border:1.5px solid var(--gold);color:var(--gold);padding:9px 22px;border-radius:4px;font-size:13px;}
+.btn-view-all:hover{background:var(--gold);color:var(--green);}
+
+/* STATS BANNER */
+.stats-banner{background:var(--cream-dark);padding:60px 8%;}
+.stats-inner{display:flex;justify-content:space-around;flex-wrap:wrap;gap:30px;max-width:900px;margin:0 auto;}
+.bstat{text-align:center;}
+.bstat-num{font-family:'Playfair Display',serif;font-size:38px;color:var(--green);font-weight:700;line-height:1;}
+.bstat-suf{font-size:20px;color:var(--gold);}
+.bstat-label{font-size:12px;color:var(--text-soft);margin-top:4px;}
+.bstat-bn{font-size:10px;color:var(--green-mid);margin-top:2px;opacity:.7;}
+
+/* STEPS */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.step-item{padding:0 16px;text-align:center;}
+.step-num{width:68px;height:68px;border-radius:50%;background:var(--green);color:var(--gold);font-family:'Playfair Display',serif;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:2.5px solid var(--gold);}
+.step-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--green);margin-bottom:6px;}
+.step-desc{font-size:12px;color:var(--text-soft);line-height:1.6;}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.modal{background:var(--cream);border-radius:16px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.4);}
+.modal-header{background:var(--green);padding:28px 32px 24px;border-radius:16px 16px 0 0;position:relative;}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.1);border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:rgba(255,255,255,.2);}
+.modal-title{font-family:'Playfair Display',serif;font-size:24px;color:white;margin-bottom:4px;}
+.modal-title-bn{font-size:14px;color:var(--gold);font-weight:300;}
+.modal-body{padding:28px 32px;}
+.form-group{margin-bottom:18px;}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--green);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.form-input{width:100%;border:1.5px solid #ddd;border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Hind Siliguri',sans-serif;background:white;color:var(--charcoal);outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(27,77,62,.1);}
+.form-input.err{border-color:var(--error);}
+.form-select{width:100%;border:1.5px solid #ddd;border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Hind Siliguri',sans-serif;background:white;color:var(--charcoal);outline:none;}
+.form-select:focus{border-color:var(--green);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-error{font-size:11px;color:var(--error);margin-top:4px;}
+.form-hint{font-size:11px;color:var(--text-soft);margin-top:4px;}
+.btn-submit{width:100%;background:var(--green);color:white;border:none;padding:14px;border-radius:8px;font-size:15px;font-weight:700;margin-top:6px;}
+.btn-submit:hover{background:var(--green-mid);}
+.btn-submit:disabled{background:#aaa;cursor:not-allowed;}
+.modal-switch{text-align:center;margin-top:18px;font-size:13px;color:var(--text-soft);}
+.modal-switch span{color:var(--green);font-weight:600;cursor:pointer;}
+.modal-switch span:hover{text-decoration:underline;}
+.step-bar{display:flex;gap:6px;margin-top:12px;}
+.step-bar-item{flex:1;height:4px;border-radius:4px;}
+
+/* PAYMENT */
+.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.pay-method{border:2px solid #ddd;border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;background:white;}
+.pay-method:hover{border-color:var(--green);}
+.pay-method.sel{border-color:var(--green);background:rgba(27,77,62,.04);}
+.pay-method-icon{font-size:28px;margin-bottom:6px;}
+.pay-method-name{font-size:13px;font-weight:600;color:var(--green);}
+.pay-method-desc{font-size:10px;color:var(--text-soft);margin-top:2px;}
+.amt-display{background:var(--green);border-radius:10px;padding:16px 20px;text-align:center;margin-bottom:20px;}
+.amt-label{font-size:11px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.amt-value{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);font-weight:700;}
+.amt-shares{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+.shares-wrap{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.shares-wrap input{flex:1;text-align:center;font-size:18px;font-weight:700;}
+.shares-btn{width:36px;height:36px;border:1.5px solid var(--green);border-radius:6px;background:white;color:var(--green);font-size:18px;font-weight:700;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.shares-btn:hover{background:var(--green);color:white;}
+
+/* DASHBOARD */
+.dashboard{min-height:100vh;background:var(--cream);padding:40px 8%;}
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:36px;}
+.dash-card{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);border-left:4px solid var(--green);}
+.dash-card.gold{border-left-color:var(--gold);}
+.dash-card.green2{border-left-color:var(--green-light);}
+.dash-card-label{font-size:11px;color:var(--text-soft);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;}
+.dash-card-value{font-family:'Playfair Display',serif;font-size:26px;color:var(--green);font-weight:700;}
+.dash-card.gold .dash-card-value{color:var(--gold);}
+.dash-card.green2 .dash-card-value{color:var(--green-light);}
+.dash-card-sub{font-size:11px;color:var(--text-soft);margin-top:4px;}
+.inv-table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.inv-table th{background:var(--green);color:white;padding:13px 16px;text-align:left;font-size:12px;letter-spacing:.8px;text-transform:uppercase;font-weight:600;}
+.inv-table td{padding:13px 16px;font-size:13px;border-bottom:1px solid #f0f0f0;}
+.inv-table tr:last-child td{border-bottom:none;}
+.s-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;background:#e8f5e9;color:var(--success);}
+.kyc-box{background:white;border-radius:12px;padding:24px;margin-top:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.kyc-warn{display:flex;align-items:flex-start;gap:12px;padding:14px;background:#fff8e1;border-radius:8px;border:1px solid #ffe082;font-size:13px;color:#7d5e00;}
+.btn-kyc{background:var(--gold);border:none;color:var(--green);padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;margin-top:12px;}
+
+/* PROJECT DETAIL */
+.proj-detail{min-height:100vh;background:var(--cream);padding:40px 8%;}
+.back-btn{display:flex;align-items:center;gap:8px;color:var(--green);font-size:14px;margin-bottom:28px;background:none;border:none;font-family:'Hind Siliguri',sans-serif;}
+.detail-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:32px;align-items:start;}
+.detail-img{height:300px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:80px;opacity:.4;margin-bottom:24px;}
+.detail-title{font-family:'Playfair Display',serif;font-size:30px;color:var(--green);margin-bottom:8px;}
+.detail-desc{font-size:14px;color:var(--text-mid);line-height:1.8;margin-bottom:20px;}
+.feat-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.feat-tag{background:rgba(27,77,62,.08);color:var(--green);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;}
+.docs-box{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:20px;}
+.doc-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:13px;color:var(--text-mid);}
+.doc-item:last-child{border-bottom:none;}
+.invest-panel{background:white;border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.1);position:sticky;top:90px;}
+.invest-panel-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--green);margin-bottom:20px;}
+.i-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.istat{background:var(--cream);border-radius:8px;padding:12px;}
+.istat-label{font-size:10px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;}
+.istat-val{font-family:'Playfair Display',serif;font-size:20px;color:var(--green);font-weight:700;}
+
+/* NOTIFICATIONS */
+.notif-wrap{position:fixed;top:84px;right:20px;z-index:600;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+.notif-item{background:white;border-radius:10px;padding:14px 18px;box-shadow:0 8px 30px rgba(0,0,0,.15);border-left:4px solid var(--success);min-width:280px;pointer-events:all;animation:slideIn .3s ease;}
+.notif-item.nerr{border-left-color:var(--error);}
+.notif-title{font-size:13px;font-weight:700;color:var(--charcoal);margin-bottom:2px;}
+.notif-msg{font-size:12px;color:var(--text-soft);}
+@keyframes slideIn{from{opacity:0;transform:translateX(40px);}to{opacity:1;transform:translateX(0);}}
+
+/* FOOTER */
+.footer{background:#0F2E24;color:rgba(255,255,255,.55);padding:50px 8% 24px;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08);}
+.footer-col-title{color:var(--gold);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.footer-links a{color:rgba(255,255,255,.5);font-size:12px;cursor:pointer;}
+.footer-links a:hover{color:var(--gold);}
+.footer-bottom{display:flex;justify-content:space-between;font-size:11px;flex-wrap:wrap;gap:10px;}
+.legal{font-size:10px;color:rgba(255,255,255,.25);margin-top:16px;line-height:1.6;padding-top:16px;border-top:1px solid rgba(255,255,255,.05);}
+
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr;}.hero-right{display:none;}
+  .hero-title{font-size:32px;}.steps-grid{grid-template-columns:1fr 1fr;}
+  .projects-grid{grid-template-columns:1fr;}.dash-grid{grid-template-columns:1fr 1fr;}
+  .detail-grid{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}.form-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState} = React;
+
+const PROJECTS = [
+  {id:1,name:'Bashundhara Residence Tower',namebn:'বসুন্ধরা রেসিডেন্স টাওয়ার',location:'Bashundhara R/A, Dhaka',icon:'🏙️',imgClass:'proj-img-1',risk:'Low Risk',sharePrice:50000,target:30000000,funded:72,estReturn:18,duration:'18 months',desc:'A premium residential tower in Dhaka\'s most prestigious address. High-end apartments with modern amenities, located in Bashundhara R/A. Investors share in sale proceeds upon project completion.',features:['6 Floors','24 Units','Rooftop Garden','Generator Backup','CCTV Security'],docs:['Land Title Certificate','RAJUK Approval','Soil Test Report','Structural Plan']},
+  {id:2,name:'Chittagong Bay View Complex',namebn:'চট্টগ্রাম বে ভিউ কমপ্লেক্স',location:'Agrabad, Chittagong',icon:'🏢',imgClass:'proj-img-2',risk:'Medium Risk',sharePrice:25000,target:15000000,funded:45,estReturn:22,duration:'24 months',desc:'A commercial and residential mixed-use complex in Chittagong\'s Agrabad commercial hub. Prime location near the port and major business centers offering high rental yields.',features:['8 Floors','Commercial Ground Floor','32 Apartments','Port View','Underground Parking'],docs:['Land Title Certificate','CDA Approval','Environmental Clearance','Architectural Design']},
+  {id:3,name:'Sylhet Green Valley Villas',namebn:'সিলেট গ্রিন ভ্যালি ভিলাস',location:'Shahjalal Uposhahar, Sylhet',icon:'🌿',imgClass:'proj-img-3',risk:'Low Risk',sharePrice:100000,target:50000000,funded:89,estReturn:16,duration:'12 months',desc:'Eco-friendly luxury villas in Sylhet. Popular with NRBs and local elite buyers. High demand from Sylheti expatriates returning to invest in their homeland.',features:['12 Villas','Private Gardens','NRB-Friendly','Near Airport','Security 24/7'],docs:['Land Title Certificate','SCC Approval','Green Building Certificate','Sales Agreement Template']},
+];
+
+const fmt = n => '৳ ' + n.toLocaleString('en-IN');
+
+function Notifs({notifs,remove}){
+  return <div className="notif-wrap">{notifs.map(n=><div key={n.id} className={`notif-item ${n.type==='error'?'nerr':''}`} onClick={()=>remove(n.id)}><div className="notif-title">{n.title}</div><div className="notif-msg">{n.msg}</div></div>)}</div>;
+}
+
+function Nav({page,setPage,user,logout,openLogin,openRegister}){
+  return <nav className="nav">
+    <div className="nav-logo" onClick={()=>setPage('home')}>
+      <div className="logo-emblem">ভ</div>
+      <div><span className="logo-bn">ভূমি বিনিয়োগ</span><span className="logo-en">Bhumi Biniog · Real Estate</span></div>
+    </div>
+    <ul className="nav-links">
+      {[['home','Home'],['projects','Projects'],['how','How It Works']].map(([p,l])=><li key={p}><a className={page===p?'active':''} onClick={()=>setPage(p)}>{l}</a></li>)}
+      {user&&<li><a className={page==='dashboard'?'active':''} onClick={()=>setPage('dashboard')}>My Dashboard</a></li>}
+    </ul>
+    <div className="nav-actions">
+      {user?<><span className="user-greeting">👤 {user.name.split(' ')[0]}</span><button className="btn-nav-logout" onClick={logout}>Logout</button></>
+      :<><button className="btn-nav-login" onClick={openLogin}>লগইন / Login</button><button className="btn-nav-register" onClick={openRegister}>রেজিস্টার / Register</button></>}
+    </div>
+  </nav>;
+}
+
+function LoginModal({close,switchReg,onLogin,addNotif}){
+  const [f,setF]=useState({email:'',password:''});
+  const [errs,setErrs]=useState({});
+  const [loading,setLoading]=useState(false);
+  const validate=()=>{const e={};if(!f.email)e.email='Email required';else if(!/\S+@\S+\.\S+/.test(f.email))e.email='Invalid email';if(!f.password)e.password='Password required';else if(f.password.length<6)e.password='Min 6 characters';return e;};
+  const submit=async()=>{const e=validate();if(Object.keys(e).length){setErrs(e);return;}setLoading(true);await new Promise(r=>setTimeout(r,1200));const user={name:f.email.split('@')[0],email:f.email,investments:[],kycDone:false};setLoading(false);onLogin(user);addNotif({title:'Welcome back! স্বাগতম!',msg:`Logged in as ${f.email}`,type:'success'});close();};
+  return <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&close()}>
+    <div className="modal">
+      <div className="modal-header">
+        <button className="modal-close" onClick={close}>✕</button>
+        <div className="modal-title">Welcome Back</div>
+        <div className="modal-title-bn">আপনার অ্যাকাউন্টে লগইন করুন</div>
+      </div>
+      <div className="modal-body">
+        <div className="form-group"><label className="form-label">Email Address</label><input className={`form-input ${errs.email?'err':''}`} type="email" placeholder="your@email.com" value={f.email} onChange={e=>{setF({...f,email:e.target.value});setErrs({...errs,email:''});}}/>{errs.email&&<div className="form-error">{errs.email}</div>}</div>
+        <div className="form-group"><label className="form-label">Password</label><input className={`form-input ${errs.password?'err':''}`} type="password" placeholder="••••••••" value={f.password} onChange={e=>{setF({...f,password:e.target.value});setErrs({...errs,password:''});}} onKeyDown={e=>e.key==='Enter'&&submit()}/>{errs.password&&<div className="form-error">{errs.password}</div>}<div className="form-hint">Demo: any valid email + 6 character password</div></div>
+        <button className="btn-submit" onClick={submit} disabled={loading}>{loading?'⏳ Logging in...':'লগইন করুন · Login'}</button>
+        <div className="modal-switch">No account? <span onClick={switchReg}>Register here →</span></div>
+      </div>
+    </div>
+  </div>;
+}
+
+function RegisterModal({close,switchLogin,onLogin,addNotif}){
+  const [step,setStep]=useState(1);
+  const [f,setF]=useState({name:'',email:'',phone:'',password:'',confirm:'',nid:'',dob:'',district:'',type:'individual'});
+  const [errs,setErrs]=useState({});
+  const [loading,setLoading]=useState(false);
+  const districts=['Dhaka','Chittagong','Sylhet','Rajshahi','Khulna','Barishal','Mymensingh','Rangpur','Comilla','Narayanganj','Gazipur','Tangail','Jessore','Dinajpur','Bogura'];
+  const v1=()=>{const e={};if(!f.name.trim())e.name='Full name required';if(!f.email)e.email='Email required';else if(!/\S+@\S+\.\S+/.test(f.email))e.email='Invalid email';if(!f.phone)e.phone='Phone required';else if(!/^01[3-9]\d{8}$/.test(f.phone))e.phone='Enter valid BD number (01711...)';return e;};
+  const v2=()=>{const e={};if(!f.password)e.password='Password required';else if(f.password.length<8)e.password='Min 8 characters';if(f.confirm!==f.password)e.confirm='Passwords do not match';if(!f.nid)e.nid='NID required';if(!f.district)e.district='Select your district';return e;};
+  const next=()=>{const e=v1();if(Object.keys(e).length){setErrs(e);return;}setErrs({});setStep(2);};
+  const submit=async()=>{const e=v2();if(Object.keys(e).length){setErrs(e);return;}setLoading(true);await new Promise(r=>setTimeout(r,1500));const user={name:f.name,email:f.email,phone:f.phone,investments:[],kycDone:false};setLoading(false);onLogin(user);addNotif({title:'Registration successful! 🎉',msg:`Welcome, ${f.name.split(' ')[0]}!`,type:'success'});close();};
+  return <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&close()}>
+    <div className="modal">
+      <div className="modal-header">
+        <button className="modal-close" onClick={close}>✕</button>
+        <div className="modal-title">{step===1?'Create Account':'Identity Verification'}</div>
+        <div className="modal-title-bn">{step===1?'নতুন অ্যাকাউন্ট তৈরি করুন':'আপনার পরিচয় যাচাই করুন'}</div>
+        <div className="step-bar">{[1,2].map(s=><div key={s} className="step-bar-item" style={{background:step>=s?'var(--gold)':'rgba(255,255,255,.2)'}}/>)}</div>
+        <div style={{fontSize:11,color:'rgba(255,255,255,.5)',marginTop:6}}>Step {step} of 2</div>
+      </div>
+      <div className="modal-body">
+        {step===1?<>
+          <div className="form-group"><label className="form-label">Account Type</label><select className="form-select" value={f.type} onChange={e=>setF({...f,type:e.target.value})}><option value="individual">Individual Investor (ব্যক্তি)</option><option value="company">Company / Business (প্রতিষ্ঠান)</option><option value="nrb">NRB - Non-Resident Bangladeshi</option></select></div>
+          <div className="form-group"><label className="form-label">Full Name (পুরো নাম)</label><input className={`form-input ${errs.name?'err':''}`} placeholder="As per NID card" value={f.name} onChange={e=>{setF({...f,name:e.target.value});setErrs({...errs,name:''});}}/>{errs.name&&<div className="form-error">{errs.name}</div>}</div>
+          <div className="form-grid">
+            <div className="form-group"><label className="form-label">Email</label><input className={`form-input ${errs.email?'err':''}`} type="email" placeholder="your@email.com" value={f.email} onChange={e=>{setF({...f,email:e.target.value});setErrs({...errs,email:''});}}/>{errs.email&&<div className="form-error">{errs.email}</div>}</div>
+            <div className="form-group"><label className="form-label">Mobile Number</label><input className={`form-input ${errs.phone?'err':''}`} placeholder="01711XXXXXX" value={f.phone} onChange={e=>{setF({...f,phone:e.target.value});setErrs({...errs,phone:''});}}/>{errs.phone&&<div className="form-error">{errs.phone}</div>}<div className="form-hint">bKash/Nagad preferred</div></div>
+          </div>
+          <button className="btn-submit" onClick={next}>Continue → পরবর্তী ধাপ</button>
+        </>:<>
+          <div className="form-grid">
+            <div className="form-group"><label className="form-label">Password</label><input className={`form-input ${errs.password?'err':''}`} type="password" placeholder="Min 8 chars" value={f.password} onChange={e=>{setF({...f,password:e.target.value});setErrs({...errs,password:''});}}/>{errs.password&&<div className="form-error">{errs.password}</div>}</div>
+            <div className="form-group"><label className="form-label">Confirm Password</label><input className={`form-input ${errs.confirm?'err':''}`} type="password" placeholder="Re-enter" value={f.confirm} onChange={e=>{setF({...f,confirm:e.target.value});setErrs({...errs,confirm:''});}}/>{errs.confirm&&<div className="form-error">{errs.confirm}</div>}</div>
+          </div>
+          <div className="form-group"><label className="form-label">NID Number (জাতীয় পরিচয়পত্র নং)</label><input className={`form-input ${errs.nid?'err':''}`} placeholder="10 or 17 digit NID" value={f.nid} onChange={e=>{setF({...f,nid:e.target.value});setErrs({...errs,nid:''});}}/>{errs.nid&&<div className="form-error">{errs.nid}</div>}</div>
+          <div className="form-grid">
+            <div className="form-group"><label className="form-label">Date of Birth</label><input className="form-input" type="date" value={f.dob} onChange={e=>setF({...f,dob:e.target.value})}/></div>
+            <div className="form-group"><label className="form-label">District (জেলা)</label><select className={`form-select ${errs.district?'err':''}`} value={f.district} onChange={e=>{setF({...f,district:e.target.value});setErrs({...errs,district:''});}}><option value="">Select...</option>{districts.map(d=><option key={d}>{d}</option>)}</select>{errs.district&&<div className="form-error">{errs.district}</div>}</div>
+          </div>
+          <div style={{fontSize:11,color:'var(--text-soft)',background:'var(--cream-dark)',padding:'10px 14px',borderRadius:8,marginBottom:16,lineHeight:1.6}}>✅ By registering you agree to our Terms & Conditions. আপনার তথ্য সম্পূর্ণ নিরাপদ থাকবে।</div>
+          <div style={{display:'flex',gap:10}}>
+            <button style={{flex:1,background:'transparent',border:'1.5px solid var(--green)',color:'var(--green)',padding:12,borderRadius:8,fontSize:14,fontFamily:'Hind Siliguri,sans-serif'}} onClick={()=>{setStep(1);setErrs({});}}>← Back</button>
+            <button className="btn-submit" style={{flex:2,margin:0}} onClick={submit} disabled={loading}>{loading?'⏳ Creating account...':'✅ রেজিস্টার করুন · Register'}</button>
+          </div>
+        </>}
+        <div className="modal-switch">Already registered? <span onClick={switchLogin}>Login here →</span></div>
+      </div>
+    </div>
+  </div>;
+}
+
+function PaymentModal({project,close,user,onInvest,addNotif}){
+  const [method,setMethod]=useState('bkash');
+  const [shares,setShares]=useState(1);
+  const [step,setStep]=useState(1);
+  const [loading,setLoading]=useState(false);
+  const [done,setDone]=useState(false);
+  const [phone,setPhone]=useState('');
+  const [pin,setPin]=useState('');
+  const total=shares*project.sharePrice;
+  const methods=[{id:'bkash',icon:'🟣',name:'bKash',desc:'Mobile banking'},{id:'nagad',icon:'🟠',name:'Nagad',desc:'Mobile banking'},{id:'bank',icon:'🏦',name:'Bank Transfer',desc:'BEFTN / NPSB'},{id:'card',icon:'💳',name:'Card Payment',desc:'Visa / Mastercard'}];
+  const proceed=async()=>{setLoading(true);await new Promise(r=>setTimeout(r,2000));setLoading(false);setDone(true);onInvest({projectId:project.id,projectName:project.name,shares,total,method,date:new Date().toLocaleDateString()});addNotif({title:'Investment Confirmed! 🎉',msg:`${shares} share(s) in ${project.name}`,type:'success'});};
+  if(done)return <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&close()}><div className="modal" style={{textAlign:'center'}}><div style={{padding:'50px 32px'}}><div style={{fontSize:64,marginBottom:20}}>🎉</div><div style={{fontFamily:'Playfair Display,serif',fontSize:26,color:'var(--green)',marginBottom:8}}>Investment Confirmed!</div><div style={{fontSize:16,color:'var(--gold)',marginBottom:20}}>বিনিয়োগ সফলভাবে সম্পন্ন হয়েছে!</div><div style={{background:'var(--cream)',borderRadius:12,padding:'20px',marginBottom:24}}><div style={{fontSize:13,color:'var(--text-soft)',marginBottom:4}}>Total Invested</div><div style={{fontFamily:'Playfair Display,serif',fontSize:32,color:'var(--green)',fontWeight:700}}>{fmt(total)}</div><div style={{fontSize:12,color:'var(--text-soft)',marginTop:4}}>{shares} share(s) · {project.name}</div></div><div style={{fontSize:12,color:'var(--text-soft)',marginBottom:24}}>Your share certificate will be emailed within 24 hours. শেয়ার সার্টিফিকেট ইমেইলে পাঠানো হবে।</div><button className="btn-primary" style={{width:'100%'}} onClick={close}>Go to My Dashboard →</button></div></div></div>;
+  return <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&close()}>
+    <div className="modal" style={{maxWidth:520}}>
+      <div className="modal-header">
+        <button className="modal-close" onClick={close}>✕</button>
+        <div className="modal-title">{step===1?'Choose Investment':'Complete Payment'}</div>
+        <div className="modal-title-bn">{step===1?'বিনিয়োগের পরিমাণ নির্বাচন করুন':'পেমেন্ট সম্পন্ন করুন'}</div>
+        <div className="step-bar">{[1,2].map(s=><div key={s} className="step-bar-item" style={{background:step>=s?'var(--gold)':'rgba(255,255,255,.2)'}}/>)}</div>
+      </div>
+      <div className="modal-body">
+        {step===1?<>
+          <div className="amt-display"><div className="amt-label">Total Investment</div><div className="amt-value">{fmt(total)}</div><div className="amt-shares">{shares} share(s) × {fmt(project.sharePrice)}</div></div>
+          <div className="form-group"><label className="form-label">Number of Shares (শেয়ার সংখ্যা)</label><div className="shares-wrap"><button className="shares-btn" onClick={()=>shares>1&&setShares(s=>s-1)}>−</button><input className="form-input" type="number" min="1" value={shares} onChange={e=>setShares(Math.max(1,parseInt(e.target.value)||1))}/><button className="shares-btn" onClick={()=>setShares(s=>s+1)}>+</button></div><div className="form-hint">Share price: {fmt(project.sharePrice)}</div></div>
+          <div style={{background:'var(--cream)',borderRadius:8,padding:'14px',marginBottom:20,fontSize:12,color:'var(--text-mid)',lineHeight:1.8}}>📈 Est. annual return: <strong style={{color:'var(--green)'}}>{project.estReturn}%</strong><br/>⏱ Duration: <strong style={{color:'var(--green)'}}>{project.duration}</strong><br/>💰 Est. profit: <strong style={{color:'var(--gold)'}}>~{fmt(Math.round(total*project.estReturn/100))}/year</strong></div>
+          <div className="form-group"><label className="form-label">Payment Method</label><div className="pay-methods">{methods.map(m=><div key={m.id} className={`pay-method ${method===m.id?'sel':''}`} onClick={()=>setMethod(m.id)}><div className="pay-method-icon">{m.icon}</div><div className="pay-method-name">{m.name}</div><div className="pay-method-desc">{m.desc}</div></div>)}</div></div>
+          <button className="btn-submit" onClick={()=>setStep(2)}>Continue to Payment →</button>
+        </>:<>
+          <div className="amt-display"><div className="amt-label">Paying via {methods.find(m=>m.id===method)?.name}</div><div className="amt-value">{fmt(total)}</div><div className="amt-shares">{shares} share(s) · {project.name}</div></div>
+          {(method==='bkash'||method==='nagad')&&<><div className="form-group"><label className="form-label">{method==='bkash'?'bKash':'Nagad'} Number</label><input className="form-input" placeholder="01XXXXXXXXX" value={phone} onChange={e=>setPhone(e.target.value)}/><div className="form-hint">Enter your {method==='bkash'?'bKash':'Nagad'} registered number</div></div><div className="form-group"><label className="form-label">PIN (Demo only)</label><input className="form-input" type="password" placeholder="••••••" maxLength={6} value={pin} onChange={e=>setPin(e.target.value)}/><div className="form-hint">⚠️ Demo mode — no real payment. Real app uses secure redirect.</div></div></>}
+          {method==='bank'&&<div style={{background:'var(--cream)',borderRadius:10,padding:'16px',marginBottom:16,fontSize:13,color:'var(--text-mid)',lineHeight:1.8}}><strong style={{color:'var(--green)'}}>Bank Transfer Details:</strong><br/>Account Name: Bhumi Biniog Ltd.<br/>Account No: 1234567890<br/>Bank: Dutch-Bangla Bank Ltd.<br/>Branch: Motijheel, Dhaka<br/>Routing No: 090275488<br/><div style={{marginTop:8,fontSize:11,color:'var(--text-soft)'}}>Use your email as reference.</div></div>}
+          {method==='card'&&<><div className="form-group"><label className="form-label">Card Number</label><input className="form-input" placeholder="XXXX XXXX XXXX XXXX" maxLength={19}/></div><div className="form-grid"><div className="form-group"><label className="form-label">Expiry</label><input className="form-input" placeholder="MM/YY"/></div><div className="form-group"><label className="form-label">CVV</label><input className="form-input" type="password" placeholder="•••" maxLength={3}/></div></div><div style={{fontSize:11,color:'var(--text-soft)',marginBottom:14}}>⚠️ Demo mode only.</div></>}
+          <div style={{display:'flex',gap:10}}>
+            <button style={{flex:1,background:'transparent',border:'1.5px solid var(--green)',color:'var(--green)',padding:12,borderRadius:8,fontSize:14,fontFamily:'Hind Siliguri,sans-serif'}} onClick={()=>setStep(1)}>← Back</button>
+            <button className="btn-submit" style={{flex:2,margin:0}} onClick={proceed} disabled={loading}>{loading?'⏳ Processing...':'✅ Confirm '+fmt(total)}</button>
+          </div>
+        </>}
+      </div>
+    </div>
+  </div>;
+}
+
+function ProjectCard({p,onClick,onInvest,user,openRegister}){
+  return <div className="project-card" onClick={onClick}>
+    <div className={`proj-img ${p.imgClass}`}><span>{p.icon}</span><span className="badge">{p.risk}</span><span className="badge-loc">📍 {p.location.split(',')[0]}</span></div>
+    <div className="proj-body">
+      <div className="proj-name">{p.name}</div>
+      <div className="proj-loc">📍 {p.location}</div>
+      <div className="pstats">
+        <div><div className="pstat-label">Share Price</div><div className="pstat-val">৳{p.sharePrice/1000}K</div></div>
+        <div><div className="pstat-label">Est. Return</div><div className="pstat-val">{p.estReturn}% p.a.</div></div>
+        <div><div className="pstat-label">Target</div><div className="pstat-val">৳{p.target/10000000}Cr</div></div>
+        <div><div className="pstat-label">Duration</div><div className="pstat-val">{p.duration.replace(' months','mo')}</div></div>
+      </div>
+      <div className="prog-header"><span className="prog-label">Funding Progress</span><span className="prog-pct">{p.funded}%</span></div>
+      <div className="prog-track"><div className="prog-fill" style={{width:`${p.funded}%`}}></div></div>
+      <button className="btn-invest" onClick={e=>{e.stopPropagation();user?onInvest(p):openRegister();}}>{user?'Invest Now · বিনিয়োগ করুন':'Register to Invest'}</button>
+    </div>
+  </div>;
+}
+
+function HomePage({setPage,openRegister,user,setSelProj,openPayment}){
+  return <div>
+    <section className="hero">
+      <div className="hero-left">
+        <div className="hero-tag">🇧🇩 Bangladesh's Real Estate Investment Platform</div>
+        <h1 className="hero-title">Invest in Bangladesh's<br/>Growing Real Estate</h1>
+        <p className="hero-title-bn">বাংলাদেশের সেরা জমিতে বিনিয়োগ করুন</p>
+        <p className="hero-desc">Become a shareholder in premium real estate projects. Share the profits as our developments grow in value. Transparent, secure, and built on trust.</p>
+        <div className="hero-cta">
+          <button className="btn-primary" onClick={()=>user?setPage('projects'):openRegister()}>বিনিয়োগ শুরু করুন · Start Investing</button>
+          <button className="btn-secondary" onClick={()=>setPage('how')}>How It Works</button>
+        </div>
+      </div>
+      <div className="hero-right">
+        <div className="stat-cluster">
+          <div className="stat-card"><div className="stat-label-sm">Platform Overview · সামগ্রিক পরিসংখ্যান</div><div className="stat-row"><div className="stat-item"><div className="stat-value">12+</div><div className="stat-sub">Projects</div></div><div className="stat-item"><div className="stat-value">843</div><div className="stat-sub">Investors</div></div><div className="stat-item"><div className="stat-value">৳22Cr</div><div className="stat-sub">Invested</div></div></div></div>
+          <div className="stat-card"><div className="stat-label-sm">Featured Project</div><div className="stat-row"><div className="stat-item"><div className="stat-value">৳3Cr</div><div className="stat-sub">Value</div></div><div className="stat-item"><div className="stat-value">18%</div><div className="stat-sub">Est. Return</div></div></div><div className="mini-prog"><div className="mini-prog-fill" style={{width:'72%'}}></div></div></div>
+          <div className="stat-card"><div className="stat-label-sm">Average Returns</div><div className="stat-row"><div className="stat-item"><div className="stat-value" style={{color:'#4CAF82'}}>18%</div><div className="stat-sub">Annual Return</div></div><div className="stat-item"><div className="stat-value">100%</div><div className="stat-sub">BD Owned</div></div></div></div>
+        </div>
+      </div>
+    </section>
+    <div className="strip">{[['🏛️','BSEC Regulated'],['🔒','Land Title Verified'],['📜','Legal Share Certificates'],['💳','bKash & Nagad'],['📱','Mobile App']].map(([i,l])=><div key={l} className="strip-item"><span>{i}</span>{l}</div>)}</div>
+    <div className="stats-banner"><div className="stats-inner">{[['12+','','Projects','প্রকল্প'],['৳22','Cr','Total Invested','বিনিয়োগ'],['843','+','Investors','বিনিয়োগকারী'],['18','%','Avg Return','গড় রিটার্ন']].map(([n,s,l,bn])=><div key={l} className="bstat"><div className="bstat-num">{n}<span className="bstat-suf">{s}</span></div><div className="bstat-label">{l}</div><div className="bstat-bn">{bn}</div></div>)}</div></div>
+    <section className="section section-dark">
+      <div className="sec-header"><div><p className="sec-label">Open for Investment</p><h2 className="sec-title">Active Projects</h2><p className="sec-title-bn">বর্তমানে বিনিয়োগের সুযোগ</p></div><button className="btn-view-all" onClick={()=>setPage('projects')}>View All →</button></div>
+      <div className="projects-grid">{PROJECTS.map(p=><ProjectCard key={p.id} p={p} onClick={()=>{setSelProj(p);setPage('detail');}} onInvest={openPayment} user={user} openRegister={openRegister}/>)}</div>
+    </section>
+    <section className="section" style={{background:'var(--cream-dark)',textAlign:'center'}}>
+      <p className="sec-label" style={{textAlign:'center'}}>Join Thousands of Investors</p>
+      <h2 className="sec-title" style={{textAlign:'center'}}>Ready to Grow Your Wealth?</h2>
+      <p style={{color:'var(--text-soft)',fontSize:15,lineHeight:1.8,maxWidth:560,margin:'0 auto 30px'}}>Start with as little as ৳ 25,000. Browse active projects and become a shareholder. আজই শুরু করুন।</p>
+      <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap'}}>
+        <button className="btn-primary" style={{background:'var(--green)',color:'white',fontSize:15,padding:'16px 40px'}} onClick={()=>user?setPage('projects'):openRegister()}>বিনিয়োগ শুরু করুন</button>
+        <button className="btn-secondary" style={{borderColor:'var(--green)',color:'var(--green)',padding:'16px 32px'}} onClick={()=>setPage('projects')}>View Projects</button>
+      </div>
+    </section>
+  </div>;
+}
+
+function ProjectsPage({setPage,setSelProj,user,openPayment,openRegister}){
+  return <section className="section section-dark" style={{minHeight:'80vh'}}>
+    <p className="sec-label">All Opportunities</p><h2 className="sec-title">Investment Projects</h2><p className="sec-title-bn">সকল বিনিয়োগের সুযোগ</p>
+    <div className="projects-grid">{PROJECTS.map(p=><ProjectCard key={p.id} p={p} onClick={()=>{setSelProj(p);setPage('detail');}} onInvest={openPayment} user={user} openRegister={openRegister}/>)}</div>
+  </section>;
+}
+
+function DetailPage({project,setPage,user,openPayment,openRegister}){
+  if(!project)return null;
+  return <div className="proj-detail">
+    <button className="back-btn" onClick={()=>setPage('projects')}>← Back to Projects</button>
+    <div className="detail-grid">
+      <div>
+        <div className={`detail-img ${project.imgClass}`}>{project.icon}</div>
+        <h1 className="detail-title">{project.name}</h1>
+        <p style={{fontSize:14,color:'var(--gold)',marginBottom:12}}>{project.namebn}</p>
+        <p style={{fontSize:14,color:'var(--text-soft)',marginBottom:16}}>📍 {project.location}</p>
+        <p className="detail-desc">{project.desc}</p>
+        <div className="feat-tags">{project.features.map(f=><span key={f} className="feat-tag">✓ {f}</span>)}</div>
+        <div className="docs-box">
+          <div style={{fontFamily:'Playfair Display,serif',fontSize:16,color:'var(--green)',marginBottom:14}}>📁 Available Documents</div>
+          {project.docs.map(d=><div key={d} className="doc-item"><span>📄</span><span>{d}</span><span style={{marginLeft:'auto',color:'var(--green)',fontSize:12,cursor:'pointer'}}>View →</span></div>)}
+        </div>
+      </div>
+      <div>
+        <div className="invest-panel">
+          <div className="invest-panel-title">Invest in This Project</div>
+          <div className="i-stats">
+            {[['Share Price',fmt(project.sharePrice)],['Est. Return',project.estReturn+'% p.a.'],['Duration',project.duration],['Risk',project.risk],['Funded',project.funded+'%'],['Target',fmt(project.target)]].map(([l,v])=><div key={l} className="istat"><div className="istat-label">{l}</div><div className="istat-val">{v}</div></div>)}
+          </div>
+          <div className="prog-header" style={{color:'var(--text-mid)'}}><span>Funding Progress</span><span style={{color:'var(--green)',fontWeight:700}}>{project.funded}%</span></div>
+          <div className="prog-track" style={{background:'#e0e0e0',marginBottom:20}}><div className="prog-fill" style={{width:`${project.funded}%`,background:'linear-gradient(90deg,var(--green),var(--green-light))'}}></div></div>
+          <button className="btn-submit" style={{background:'var(--gold)',color:'var(--green)'}} onClick={()=>user?openPayment(project):openRegister()}>{user?'🏦 Invest Now · বিনিয়োগ করুন':'🔐 Register to Invest'}</button>
+          {!user&&<div style={{fontSize:11,color:'var(--text-soft)',textAlign:'center',marginTop:10}}>Free registration · Takes 2 minutes</div>}
+        </div>
+      </div>
+    </div>
+  </div>;
+}
+
+function HowPage(){
+  return <div>
+    <section className="section">
+      <p className="sec-label">Simple Process</p><h2 className="sec-title">How It Works</h2><p className="sec-title-bn">কিভাবে কাজ করে</p>
+      <div className="steps-grid">
+        {[['১','📝','Register & Verify','Create your free account and complete KYC with your NID card.'],['২','🔍','Browse Projects','Explore projects, view land documents and expected returns.'],['৩','💰','Buy Shares','Pay via bKash, Nagad or bank transfer. Receive your share certificate.'],['৪','📈','Earn Profits','Track investments in real time. Receive profit distributions.']].map(([n,i,t,d])=><div key={n} className="step-item"><div className="step-num">{n}</div><div style={{fontSize:28,marginBottom:12}}>{i}</div><h3 className="step-title">{t}</h3><p className="step-desc">{d}</p></div>)}
+      </div>
+    </section>
+  </div>;
+}
+
+function DashboardPage({user,investments}){
+  const total=investments.reduce((s,i)=>s+i.total,0);
+  return <div className="dashboard">
+    <div style={{marginBottom:32}}><div style={{fontFamily:'Playfair Display,serif',fontSize:28,color:'var(--green)'}}>স্বাগতম, {user.name}! 👋</div><div style={{fontSize:14,color:'var(--text-soft)'}}>Your investment overview · আপনার বিনিয়োগের সারসংক্ষেপ</div></div>
+    <div className="dash-grid">
+      <div className="dash-card"><div className="dash-card-label">Total Invested</div><div className="dash-card-value">{fmt(total)}</div><div className="dash-card-sub">{investments.length} project(s)</div></div>
+      <div className="dash-card gold"><div className="dash-card-label">Est. Annual Return</div><div className="dash-card-value">{fmt(Math.round(total*.18))}</div><div className="dash-card-sub">At avg 18% p.a.</div></div>
+      <div className="dash-card green2"><div className="dash-card-label">Active Projects</div><div className="dash-card-value">{investments.length}</div><div className="dash-card-sub">Investments</div></div>
+      <div className="dash-card"><div className="dash-card-label">Shares Owned</div><div className="dash-card-value">{investments.reduce((s,i)=>s+i.shares,0)}</div><div className="dash-card-sub">Total shares</div></div>
+    </div>
+    <div style={{fontFamily:'Playfair Display,serif',fontSize:20,color:'var(--green)',marginBottom:20}}>My Investments · আমার বিনিয়োগ</div>
+    {investments.length===0?<div style={{background:'white',borderRadius:12,padding:'40px',textAlign:'center',color:'var(--text-soft)',boxShadow:'0 2px 12px rgba(0,0,0,.06)'}}><div style={{fontSize:48,marginBottom:16}}>📊</div><div style={{fontFamily:'Playfair Display,serif',fontSize:20,color:'var(--green)',marginBottom:8}}>No investments yet</div><div>Browse active projects and make your first investment.</div></div>
+    :<table className="inv-table"><thead><tr><th>Project</th><th>Shares</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr></thead><tbody>{investments.map((inv,i)=><tr key={i}><td><strong>{inv.projectName}</strong></td><td>{inv.shares}</td><td style={{color:'var(--green)',fontWeight:700}}>{fmt(inv.total)}</td><td style={{textTransform:'capitalize'}}>{inv.method}</td><td>{inv.date}</td><td><span className="s-badge">Active ✓</span></td></tr>)}</tbody></table>}
+    <div className="kyc-box">
+      <div style={{fontFamily:'Playfair Display,serif',fontSize:18,color:'var(--green)',marginBottom:16}}>🔐 KYC Verification</div>
+      <div className="kyc-warn"><span style={{fontSize:24}}>⚠️</span><div>KYC not completed. Submit your NID and selfie to unlock full investment limits. আপনার KYC যাচাই বাকি আছে।</div></div>
+      <button className="btn-kyc">Complete KYC Verification →</button>
+    </div>
+  </div>;
+}
+
+function Footer({setPage}){
+  return <footer className="footer">
+    <div className="footer-top">
+      <div><div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12}}><div className="logo-emblem" style={{width:36,height:36,fontSize:16}}>ভ</div><div><span className="logo-bn">ভূমি বিনিয়োগ</span><span className="logo-en">Bhumi Biniog</span></div></div><p style={{fontSize:12,lineHeight:1.7,maxWidth:240}}>Bangladesh's first transparent real estate investment platform.</p></div>
+      <div><p className="footer-col-title">Invest</p><ul className="footer-links">{['Active Projects','Completed','Statistics','How It Works'].map(l=><li key={l}><a>{l}</a></li>)}</ul></div>
+      <div><p className="footer-col-title">Company</p><ul className="footer-links">{['About Us','Team','Press','Careers'].map(l=><li key={l}><a>{l}</a></li>)}</ul></div>
+      <div><p className="footer-col-title">Legal</p><ul className="footer-links">{['Privacy Policy','Terms','Investor Info','Risk Disclosure'].map(l=><li key={l}><a>{l}</a></li>)}</ul></div>
+    </div>
+    <div className="footer-bottom"><span>🇧🇩 Made in Bangladesh</span><span>© 2026 ভূমি বিনিয়োগ. All rights reserved.</span><span>BSEC Regulated</span></div>
+    <div className="legal">ভূমি বিনিয়োগ is a regulated platform. Investing involves risk including possible loss of principal. Past returns do not guarantee future performance. Subject to BSEC regulations.</div>
+  </footer>;
+}
+
+function App(){
+  const [page,setPage]=useState('home');
+  const [modal,setModal]=useState(null);
+  const [user,setUser]=useState(null);
+  const [notifs,setNotifs]=useState([]);
+  const [selProj,setSelProj]=useState(null);
+  const [payProj,setPayProj]=useState(null);
+  const [investments,setInvestments]=useState([]);
+  const addNotif=n=>{const id=Date.now();setNotifs(p=>[...p,{...n,id}]);setTimeout(()=>setNotifs(p=>p.filter(x=>x.id!==id)),4000);};
+  const removeNotif=id=>setNotifs(p=>p.filter(n=>n.id!==id));
+  const logout=()=>{setUser(null);setPage('home');addNotif({title:'Logged out',msg:'See you soon! আবার আসবেন।',type:'success'});};
+  const openPayment=p=>{setPayProj(p);setModal('payment');};
+  const handleInvest=inv=>{setInvestments(p=>[...p,inv]);setTimeout(()=>setPage('dashboard'),2000);};
+  const renderPage=()=>{
+    switch(page){
+      case 'home':return <HomePage setPage={setPage} openRegister={()=>setModal('register')} user={user} setSelProj={setSelProj} openPayment={openPayment}/>;
+      case 'projects':return <ProjectsPage setPage={setPage} setSelProj={setSelProj} user={user} openPayment={openPayment} openRegister={()=>setModal('register')}/>;
+      case 'detail':return <DetailPage project={selProj} setPage={setPage} user={user} openPayment={openPayment} openRegister={()=>setModal('register')}/>;
+      case 'how':return <HowPage/>;
+      case 'dashboard':return user?<DashboardPage user={user} investments={investments}/>:null;
+      default:return <HomePage setPage={setPage} openRegister={()=>setModal('register')} user={user} setSelProj={setSelProj} openPayment={openPayment}/>;
+    }
+  };
+  return <div>
+    <Nav page={page} setPage={setPage} user={user} logout={logout} openLogin={()=>setModal('login')} openRegister={()=>setModal('register')}/>
+    {renderPage()}
+    <Footer setPage={setPage}/>
+    <Notifs notifs={notifs} remove={removeNotif}/>
+    {modal==='login'&&<LoginModal close={()=>setModal(null)} switchReg={()=>setModal('register')} onLogin={setUser} addNotif={addNotif}/>}
+    {modal==='register'&&<RegisterModal close={()=>setModal(null)} switchLogin={()=>setModal('login')} onLogin={setUser} addNotif={addNotif}/>}
+    {modal==='payment'&&payProj&&<PaymentModal project={payProj} close={()=>setModal(null)} user={user} onInvest={handleInvest} addNotif={addNotif}/>}
+  </div>;
+}
+ReactDOM.render(<React.StrictMode><App/></React.StrictMode>,document.getElementById('root'));
+</script>
+</body>
+</html>
